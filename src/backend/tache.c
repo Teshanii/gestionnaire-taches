@@ -88,6 +88,88 @@ void marquer_terminee(GestionnaireTaches*g, int id){
 
 }
 
+void sauvegarder_taches(GestionnaireTaches* gt, const char* nom_fichier){
+    FILE* fichier = fopen(nom_fichier, "w");
+    
+    if (fichier == NULL) {
+        printf("Erreur : impossible de sauvegarder les taches.\n");
+        return;
+    }
+    
+    fprintf(fichier, "%d\n", gt->nb_taches);
+    
+    // Parcourir toutes les tâches et les écrire dans le fichier
+    for (int i = 0; i < gt->nb_taches; i++) {
+        fprintf(fichier, "%d|%s|%s|%d|%d|%s\n",
+                gt->taches[i].id,
+                gt->taches[i].titre,
+                gt->taches[i].description,
+                gt->taches[i].est_terminee,
+                gt->taches[i].est_recurrente,
+                gt->taches[i].type_recurrence);
+    }
+    
+    fclose(fichier);
+    
+    printf("Taches sauvegardees avec succes !\n");
+}
+
+
+void charger_taches(GestionnaireTaches* gt, const char* nom_fichier) {
+    FILE* fichier = fopen(nom_fichier, "r");
+    
+    if (fichier == NULL) {
+        printf("Aucune sauvegarde trouvee.\n");
+        return;
+    }
+    
+    
+    int nb_taches_sauvegardees;
+    fscanf(fichier, "%d\n", &nb_taches_sauvegardees);
+    
+    for (int i = 0; i < nb_taches_sauvegardees && i < 100; i++) {
+        char ligne[1000];  
+        
+        
+        if (fgets(ligne, 1000, fichier) == NULL) {
+            break;  
+        }
+        
+        Tache t;
+        
+        
+        char* token = strtok(ligne, "|");
+        t.id = atoi(token);  // Convertir en int
+        
+        token = strtok(NULL, "|");
+        strcpy(t.titre, token);
+        
+        token = strtok(NULL, "|");
+        strcpy(t.description, token);
+        
+        token = strtok(NULL, "|");
+        t.est_terminee = atoi(token);
+        
+        token = strtok(NULL, "|");
+        t.est_recurrente = atoi(token);
+        
+        token = strtok(NULL, "\n");
+        if (token != NULL) {
+            strcpy(t.type_recurrence, token);
+        } else {
+            strcpy(t.type_recurrence, "");
+        }
+        
+        
+        gt->taches[gt->nb_taches] = t;
+        gt->nb_taches++;
+    }   
+    fclose(fichier);
+    printf("%d tache(s) chargee(s) !\n", gt->nb_taches);
+}
+
+
+
 void supprimer_tache(GestionnaireTaches* g, int id){
     for(int i = 0; i < g->nb_taches; i++){
         if(g->taches[i].id == id){
@@ -100,7 +182,7 @@ void supprimer_tache(GestionnaireTaches* g, int id){
         }
     }
         
-    printf("Erreur: aucune tache avec l'ID %d à été trouvee.\n", id);
+    printf("Erreur: aucune tache avec l'ID %d a ete trouvee.\n", id);
 
 }
 

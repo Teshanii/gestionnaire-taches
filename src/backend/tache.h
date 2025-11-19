@@ -25,6 +25,8 @@ void init_gestionnaire(GestionnaireTaches* g); //initialier le gestionnaire avan
 void ajouter_tache(GestionnaireTaches* g, const char* titre, const char* description, int recurrente, const char* type_recurrence);
 void afficher_taches(const GestionnaireTaches* g);
 void marquer_terminee(GestionnaireTaches* g, int id);
+void sauvegarder_taches(GestionnaireTaches* gt, const char* nom_fichier);
+void charger_taches(GestionnaireTaches* gt, const char* nom_fichier);
 void supprimer_tache(GestionnaireTaches* g, int id);
 
 #endif
