@@ -1,48 +1,33 @@
-# Compilateur
 CC = gcc
+CFLAGS = -Wall -Wextra -I./frontend -I./backend
 
-# Options de compilation
-CFLAGS = -Wall -Wextra -Isrc/backend
+# Flags spécifiques Windows pour SDL
+ifdef OS
+    LDFLAGS = -lmingw32 -lSDLmain -lSDL -lSDL_gfx -lm
+else
+    LDFLAGS = -lSDL -lSDL_gfx -lm
+endif
 
-# Fichiers sources
-SOURCES = src/frontend/menu.c src/backend/tache.c
+SRC = main.c \
+      backend/tache.c \
+      frontend/interface_sdl.c \
+      frontend/bouton.c \
+      frontend/graphiques.c
 
-# Fichiers objets (dans bin/)
-OBJECTS = bin/menu.o bin/tache.o
+OBJ = $(SRC:.c=.o)
+EXEC = gestionnaire.exe
 
-# Nom du programme final
-PROGRAMME = bin/main
+all: $(EXEC)
 
-# Compiler tout le projet
-all: $(PROGRAMME)
+$(EXEC): $(OBJ)
+	$(CC) -o $@ $^ $(LDFLAGS)
 
-# Creer l'executable final
-$(PROGRAMME): $(OBJECTS)
-	mkdir -p bin
-	mkdir -p data
-	$(CC) $(CFLAGS) -o $(PROGRAMME) $(OBJECTS)
-	@echo "Compilation reussie !"
+%.o: %.c
+	$(CC) -c $< -o $@ $(CFLAGS)
 
-# Compiler menu.c
-bin/menu.o: src/frontend/menu.c
-	mkdir -p bin
-	$(CC) $(CFLAGS) -c src/frontend/menu.c -o bin/menu.o
-
-# Compiler tache.c
-bin/tache.o: src/backend/tache.c
-	mkdir -p bin
-	$(CC) $(CFLAGS) -c src/backend/tache.c -o bin/tache.o
-
-# Nettoyer les fichiers generes
 clean:
-	rm -rf bin/
-	@echo "Nettoyage termine !"
+	rm -f $(OBJ) $(EXEC)
 
-# Lancer le programme
-run: all
-	./$(PROGRAMME)
-
-# Recompiler tout depuis zero
 rebuild: clean all
 
-.PHONY: all clean run rebuild
+.PHONY: all clean rebuild
