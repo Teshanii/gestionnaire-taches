@@ -20,7 +20,7 @@ void creer_bouton(Bouton* b, int x, int y, int largeur, int hauteur, const char*
 
 void dessiner_bouton(SDL_Surface* ecran, Bouton* b) {
     
-    if (b == NULL) || ecran == NULL) {
+    if (b == NULL || ecran == NULL) {
         return;
     }
 

@@ -14,8 +14,8 @@ typedef struct Tache {
     char date_echeance[11];
     int est_terminee;
     int nb_completions;
-    char date_creation[11];
-    char date_completion[11];
+    char date_creation[20];
+    char date_completion[20];
     int jours_pour_terminer;
     struct Tache* suivant;
 } Tache;

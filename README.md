@@ -19,4 +19,4 @@ make        # Compiler
 make run    # Lancer le programme
 make clean  # Nettoyer
 
-L'exécutable se trouve dans /bin
+L'exécutable se trouve dans est ./gestionnaire.exe

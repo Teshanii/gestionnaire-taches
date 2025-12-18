@@ -6,7 +6,7 @@
 /* Affiche l'historique des complétions */
 void afficher_graphique_historique(SDL_Surface* ecran, GestionnaireTaches* g) {
     
-    if (g == NULL) || ecran == NULL) {
+    if (g == NULL || ecran == NULL) {
         return;
     }
     
